@@ -1,0 +1,15 @@
+# robots.txt for TeakAura
+User-agent: *
+Disallow: /admin
+Disallow: /admin/
+Disallow: /api/
+
+Allow: /
+Allow: /catalog
+Allow: /catalog/
+Allow: /product/
+Allow: /customize
+Allow: /about
+Allow: /contact
+
+Sitemap: https://teakaura.com/sitemap.xml

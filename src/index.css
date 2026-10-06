@@ -1,0 +1,85 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-teak-deep: #2C1B10;
+    --color-teak-warm: #5A3D22;
+    --color-gold-accent: #C5A059;
+    --color-cream-bg: #FDFBF7;
+    --color-cream-card: #FAF6EE;
+  }
+
+  body {
+    background-color: #FDFBF7;
+    color: #1C1A18;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, .font-serif {
+    font-family: 'Playfair Display', Georgia, serif;
+    letter-spacing: -0.015em;
+  }
+}
+
+/* Custom Wood Grain & Glassmorphic Utilities */
+.glass-panel {
+  background: rgba(253, 251, 247, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(197, 160, 89, 0.2);
+}
+
+.glass-panel-dark {
+  background: rgba(44, 27, 16, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(212, 175, 55, 0.25);
+}
+
+/* Luxury Wood Texture Accent Lines */
+.wood-border {
+  border-image: linear-gradient(to right, transparent, #C5A059, transparent) 1;
+}
+
+/* Elegant Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #FAF6EE;
+}
+::-webkit-scrollbar-thumb {
+  background: #B8966E;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #75522F;
+}
+
+/* Image zoom smoothly */
+.zoom-on-hover {
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.zoom-on-hover:hover {
+  transform: scale(1.05);
+}
+
+/* Shimmer animation for skeleton loaders */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(90deg, #F4ECE1 25%, #FAF6EE 37%, #F4ECE1 63%);
+  background-size: 200% 100%;
+  animation: shimmer 1.6s infinite linear;
+}

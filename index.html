@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+    <title>TeakAura | 100% Solid Teakwood Made-to-Order Furniture</title>
+    <meta name="description" content="Direct workshop manufacturers of 100% solid seasoned teakwood furniture. Made to your size with 20+ years of master craftsmanship. Beds, dining tables, sofas, and custom doors." />
+    
+    <!-- Open Graph / Meta Ads Optimization -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="TeakAura" />
+    <meta property="og:title" content="TeakAura | Handcrafted Solid Teakwood Furniture" />
+    <meta property="og:description" content="Direct from master craftsmen workshop. 100% solid seasoned teakwood furniture, made to your size. Browse catalog and consult our carpenters directly." />
+    <meta property="og:image" content="https://images.unsplash.com/photo-1615066390971-03e4e1c36ddf?auto=format&fit=crop&w=1200&q=80" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Google Fonts: Playfair Display + Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Brand Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Meta Pixel (Facebook Pixel) Integration -->
+    <!-- Replace 'YOUR_PIXEL_ID' with your actual Meta Pixel ID from Meta Events Manager -->
+    <script>
+      !function(f,b,e,v,n,t,s)
+      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)}(window, document,'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+      
+      // Initialize with your Pixel ID (placeholder: 'YOUR_PIXEL_ID')
+      window.META_PIXEL_ID = 'YOUR_PIXEL_ID';
+      if (window.META_PIXEL_ID && window.META_PIXEL_ID !== 'YOUR_PIXEL_ID') {
+        fbq('init', window.META_PIXEL_ID);
+        fbq('track', 'PageView');
+      } else {
+        // Dev console logger
+        window.fbq = function() {
+          console.log('[Meta Pixel Event]:', ...arguments);
+        };
+      }
+    </script>
+    <!-- End Meta Pixel -->
+  </head>
+  <body class="bg-cream-50 text-charcoal-900 font-sans antialiased selection:bg-teak-200 selection:text-teak-950">
+    <noscript>
+      <img height="1" width="1" style="display:none"
+        src="https://www.facebook.com/tr?id=YOUR_PIXEL_ID&ev=PageView&noscript=1" alt="" />
+    </noscript>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
