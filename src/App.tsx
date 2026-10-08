@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { BrowserRouter, Routes, Route, useLocation, Navigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { BrowserRouter, Routes, Route, useLocation, Navigate, useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 
 // Common Components
@@ -8,7 +8,8 @@ import { Footer } from './components/common/Footer';
 import { WhatsAppFloating } from './components/common/WhatsAppFloating';
 import { EnquiryModal } from './components/common/EnquiryModal';
 
-// Public Pages
+// Virtual 3D Studio Mode (Commented out for now)
+// import { StudioContainer } from './StudioMode/components/StudioContainer';
 import { HomePage } from './pages/HomePage';
 import { CatalogPage } from './pages/CatalogPage';
 import { ProductDetailPage } from './pages/ProductDetailPage';
@@ -48,14 +49,38 @@ function ProtectedAdminRoute({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }
 
+// Dedicated 3D Studio Page Route (Commented out for now)
+/*
+function StudioPageRoute({ onOpenEnquiry }: { onOpenEnquiry: (custom?: string) => void }) {
+  const navigate = useNavigate();
+  return (
+    <StudioContainer
+      onExit={() => navigate('/')}
+      onOpenGlobalEnquiry={(customMsg) => onOpenEnquiry(customMsg)}
+    />
+  );
+}
+*/
+
 // Animated Page Transition Wrapper
-function AnimatedRoutes({ onOpenEnquiry }: { onOpenEnquiry: () => void }) {
+function AnimatedRoutes({
+  onOpenEnquiry,
+  onOpenStudio,
+}: {
+  onOpenEnquiry: () => void;
+  onOpenStudio?: () => void;
+}) {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith('/admin');
+  // const isStudioRoute = location.pathname === '/studio';
+
+  // if (isStudioRoute) {
+  //   return <StudioPageRoute onOpenEnquiry={onOpenEnquiry} />;
+  // }
 
   return (
     <>
-      {!isAdminRoute && <Navbar onOpenEnquiry={onOpenEnquiry} />}
+      {!isAdminRoute && <Navbar onOpenEnquiry={onOpenEnquiry} onOpenStudio={onOpenStudio} />}
 
       <AnimatePresence mode="wait">
         <motion.div
@@ -68,7 +93,7 @@ function AnimatedRoutes({ onOpenEnquiry }: { onOpenEnquiry: () => void }) {
         >
           <Routes location={location}>
             {/* Public Routes */}
-            <Route path="/" element={<HomePage />} />
+            <Route path="/" element={<HomePage onOpenStudio={onOpenStudio} />} />
             <Route path="/catalog" element={<CatalogPage />} />
             <Route path="/product/:idOrSlug" element={<ProductDetailPage />} />
             <Route path="/customize" element={<CustomizePage />} />
@@ -136,17 +161,47 @@ function AnimatedRoutes({ onOpenEnquiry }: { onOpenEnquiry: () => void }) {
 
 export function App() {
   const [globalEnquiryModalOpen, setGlobalEnquiryModalOpen] = useState(false);
+  const [enquiryProductName, setEnquiryProductName] = useState<string | undefined>(undefined);
+  // const [isStudioOpen, setIsStudioOpen] = useState(false);
+
+  // Check URL params on initial load (e.g. ?studio=true)
+  useEffect(() => {
+    // const params = new URLSearchParams(window.location.search);
+    // if (params.get('studio') === 'true') {
+    //   setIsStudioOpen(true);
+    // }
+  }, []);
+
+  const handleOpenEnquiryWithProduct = (customMsg?: string) => {
+    setEnquiryProductName(customMsg);
+    setGlobalEnquiryModalOpen(true);
+  };
 
   return (
     <AdminAuthProvider>
       <BrowserRouter>
         <div className="min-h-screen flex flex-col bg-cream-50 text-charcoal-900 selection:bg-teak-200">
-          <AnimatedRoutes onOpenEnquiry={() => setGlobalEnquiryModalOpen(true)} />
+          <AnimatedRoutes
+            onOpenEnquiry={() => handleOpenEnquiryWithProduct()}
+            // onOpenStudio={() => setIsStudioOpen(true)}
+          />
+
+          {/* Full Screen Overlay Studio Mode (Commented out for now) */}
+          {/* {isStudioOpen && (
+            <StudioContainer
+              onExit={() => setIsStudioOpen(false)}
+              onOpenGlobalEnquiry={(customMsg) => handleOpenEnquiryWithProduct(customMsg)}
+            />
+          )} */}
 
           {/* Global Quick Enquiry Modal */}
           <EnquiryModal
             isOpen={globalEnquiryModalOpen}
-            onClose={() => setGlobalEnquiryModalOpen(false)}
+            onClose={() => {
+              setGlobalEnquiryModalOpen(false);
+              setEnquiryProductName(undefined);
+            }}
+            productName={enquiryProductName}
           />
         </div>
       </BrowserRouter>
@@ -154,3 +209,4 @@ export function App() {
   );
 }
 export default App;
+

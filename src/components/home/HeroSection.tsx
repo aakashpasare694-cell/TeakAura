@@ -1,13 +1,14 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Sparkles, ShieldCheck } from 'lucide-react';
+import { ArrowRight, Sparkles, ShieldCheck, Compass } from 'lucide-react';
 import { BRAND } from '../../config/brand';
 
 interface HeroSectionProps {
   onOpenEnquiry: () => void;
+  onOpenStudio?: () => void;
 }
 
-export function HeroSection({ onOpenEnquiry }: HeroSectionProps) {
+export function HeroSection({ onOpenEnquiry, onOpenStudio }: HeroSectionProps) {
   return (
     <section className="relative min-h-[92vh] flex items-center justify-center overflow-hidden bg-teak-950">
       {/* Background Photography with Warm Atmospheric Gradient */}
@@ -57,16 +58,26 @@ export function HeroSection({ onOpenEnquiry }: HeroSectionProps) {
           We run our own workshop and manufacture made-to-order furniture using 100% seasoned Grade-A teakwood. Tell us your room dimensions—we build it with master joinery.
         </motion.p>
 
-        {/* Dual Primary Call-to-Actions */}
+        {/* Triple Call-to-Actions */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.45 }}
-          className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-5"
+          className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-4 flex-wrap"
         >
+          {/* {onOpenStudio && (
+            <button
+              onClick={onOpenStudio}
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-gradient-to-r from-gold-500 via-amber-500 to-amber-600 hover:from-gold-400 hover:to-amber-500 text-charcoal-950 font-bold px-8 py-4 rounded-xl text-base shadow-warm-lg hover:shadow-warm-xl transition-all duration-300 hover:scale-[1.02] active:scale-95 border border-gold-300 uppercase tracking-wider"
+            >
+              <Compass className="w-5 h-5 text-stone-950" />
+              <span>ENTER VIRTUAL STUDIO →</span>
+            </button>
+          )} */}
+
           <Link
             to="/catalog"
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-gold-500 hover:bg-gold-400 text-charcoal-950 font-semibold px-8 py-4 rounded-xl text-base shadow-warm-lg hover:shadow-warm-xl transition-all duration-300 hover:scale-[1.02] active:scale-95"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-teak-900 hover:bg-teak-800 text-cream-50 font-semibold px-8 py-4 rounded-xl text-base shadow-warm-md hover:shadow-warm-lg transition-all duration-300 hover:scale-[1.02] active:scale-95 border border-teak-700"
           >
             <span>Explore Collection</span>
             <ArrowRight className="w-4 h-4" />

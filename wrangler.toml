@@ -1,9 +1,11 @@
-name = "teakaura"
+name = "teak-aura"
+pages_build_output_dir = "./dist"
 compatibility_date = "2024-09-23"
 
-[assets]
-directory = "./dist"
-not_found_handling = "single-page-application"
+[[d1_databases]]
+binding = "DB"
+database_name = "teak-furniture-db"
+database_id = "b6b32c9d-b88b-4ea5-a3d8-1ea2dd6e5857"
 
 # Environment Variables
 [vars]

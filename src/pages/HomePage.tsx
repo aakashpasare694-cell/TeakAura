@@ -13,7 +13,7 @@ import { Product, Testimonial } from '../types';
 import { getProducts, getTestimonials } from '../utils/api';
 import { BRAND } from '../config/brand';
 
-export function HomePage() {
+export function HomePage({ onOpenStudio }: { onOpenStudio?: () => void }) {
   const [products, setProducts] = useState<Product[]>([]);
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [loading, setLoading] = useState(true);
@@ -59,7 +59,7 @@ export function HomePage() {
 
       <main>
         {/* 1. Full-screen Hero Section */}
-        <HeroSection onOpenEnquiry={handleOpenGeneralEnquiry} />
+        <HeroSection onOpenEnquiry={handleOpenGeneralEnquiry} onOpenStudio={onOpenStudio} />
 
         {/* 2. Trust Bar with Animated Counters */}
         <TrustBar />

@@ -1,14 +1,15 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Phone, Sparkles } from 'lucide-react';
+import { Menu, X, Phone, Sparkles, Compass } from 'lucide-react';
 import { BRAND } from '../../config/brand';
 import { trackContactEvent } from '../../utils/metaPixel';
 
 interface NavbarProps {
   onOpenEnquiry: () => void;
+  onOpenStudio?: () => void;
 }
 
-export function Navbar({ onOpenEnquiry }: NavbarProps) {
+export function Navbar({ onOpenEnquiry, onOpenStudio }: NavbarProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
@@ -84,7 +85,18 @@ export function Navbar({ onOpenEnquiry }: NavbarProps) {
             </nav>
 
             {/* Desktop CTAs */}
-            <div className="hidden lg:flex items-center gap-4">
+            <div className="hidden lg:flex items-center gap-3">
+              {/* ENTER STUDIO CTA BUTTON - COMMENTED OUT FOR NOW */}
+              {/* {onOpenStudio && (
+                <button
+                  onClick={onOpenStudio}
+                  className="bg-gradient-to-r from-gold-500 via-amber-500 to-amber-600 hover:from-gold-400 hover:to-amber-500 text-stone-950 px-4 py-2 rounded-xl text-xs font-bold shadow-warm-md hover:shadow-warm-xl transition-all flex items-center gap-2 border border-gold-400/50 uppercase tracking-wider animate-pulse"
+                >
+                  <Compass className="w-3.5 h-3.5" />
+                  <span>ENTER STUDIO →</span>
+                </button>
+              )} */}
+
               <a
                 href={`tel:${BRAND.phone}`}
                 onClick={() => trackContactEvent('Phone', 'Navbar Phone')}
@@ -96,15 +108,24 @@ export function Navbar({ onOpenEnquiry }: NavbarProps) {
 
               <button
                 onClick={onOpenEnquiry}
-                className="bg-teak-900 hover:bg-teak-800 text-cream-50 px-5 py-2.5 rounded-xl text-sm font-medium shadow-warm-sm hover:shadow-warm-md transition-all flex items-center gap-2"
+                className="bg-teak-900 hover:bg-teak-800 text-cream-50 px-4 py-2 rounded-xl text-xs font-medium shadow-warm-sm hover:shadow-warm-md transition-all flex items-center gap-1.5"
               >
                 <Sparkles className="w-3.5 h-3.5 text-gold-400" />
                 <span>Enquire Now</span>
               </button>
             </div>
 
-            {/* Mobile Actions: Enquire & Hamburger */}
+            {/* Mobile Actions: Enter Studio (commented), Enquire & Hamburger */}
             <div className="flex md:hidden items-center gap-2">
+              {/* {onOpenStudio && (
+                <button
+                  onClick={onOpenStudio}
+                  className="bg-gradient-to-r from-gold-500 to-amber-600 text-stone-950 px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1 shadow-sm uppercase tracking-tighter"
+                >
+                  <Compass className="w-3 h-3" />
+                  <span>STUDIO</span>
+                </button>
+              )} */}
               <button
                 onClick={onOpenEnquiry}
                 className="bg-teak-900 text-cream-50 px-3.5 py-1.5 rounded-lg text-xs font-medium"
