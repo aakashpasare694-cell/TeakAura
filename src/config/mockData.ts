@@ -1,6 +1,6 @@
 // High-fidelity fallback & development data matching db/seed.sql
 
-import { Category, Product, Testimonial, Enquiry } from '../types';
+import type { Category, Product, Testimonial, Enquiry } from '../types';
 
 export const MOCK_CATEGORIES: Category[] = [
   { id: 1, name: 'Beds', slug: 'beds', description: 'Solid teakwood bedframes with floating headboards and heirloom joinery', display_order: 1, product_count: 10 },
