@@ -1,16 +1,16 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sparkles, SlidersHorizontal, PackageOpen } from 'lucide-react';
+import { Sparkles, SlidersHorizontal, PackageOpen, LayoutGrid, List } from 'lucide-react';
 import { SEO } from '../components/common/SEO';
 import { CategoryFilter } from '../components/catalog/CategoryFilter';
 import { SearchBar } from '../components/catalog/SearchBar';
 import { ProductCard } from '../components/catalog/ProductCard';
+import { QuickViewModal } from '../components/catalog/QuickViewModal';
 import { ProductCardSkeleton } from '../components/common/Skeleton';
 import { EnquiryModal } from '../components/common/EnquiryModal';
 import { Product, Category } from '../types';
 import { getProducts, getCategories } from '../utils/api';
-import { BRAND } from '../config/brand';
 
 export function CatalogPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -21,12 +21,19 @@ export function CatalogPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Search input state (debounced sync to URL)
+  // Layout mode state: 'grid' | 'list'
+  const [layoutMode, setLayoutMode] = useState<'grid' | 'list'>('grid');
+
+  // Search input state
   const [searchTerm, setSearchTerm] = useState(queryParam);
 
   // Modal enquiry state
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+
+  // Quick view modal state
+  const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
+  const [quickViewOpen, setQuickViewOpen] = useState(false);
 
   // Load Categories once
   useEffect(() => {
@@ -88,6 +95,11 @@ export function CatalogPage() {
     setModalOpen(true);
   };
 
+  const handleOpenQuickView = (product: Product) => {
+    setQuickViewProduct(product);
+    setQuickViewOpen(true);
+  };
+
   return (
     <>
       <SEO
@@ -95,16 +107,16 @@ export function CatalogPage() {
         description="Browse our complete collection of 100% solid seasoned teakwood furniture. Manufactured made-to-order in our workshop with direct craftsman consultation."
       />
 
-      <div className="bg-cream-50 min-h-screen py-12 sm:py-16">
+      <div className="bg-cream-50 min-h-screen py-10 sm:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header Banner */}
-          <div className="text-center max-w-3xl mx-auto mb-12">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gold-400/20 text-gold-700 text-xs font-semibold uppercase tracking-wider mb-3">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>Workshop Crafted Collection</span>
+          <div className="text-center max-w-3xl mx-auto mb-10">
+            <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-gold-400/20 text-gold-700 border border-gold-500/30 text-xs font-semibold uppercase tracking-wider mb-3">
+              <Sparkles className="w-3.5 h-3.5 text-gold-600" />
+              <span>Workshop Crafted Furniture Collection</span>
             </span>
             <h1 className="font-serif text-3xl sm:text-5xl font-bold text-teak-950 tracking-tight">
-              Furniture Catalog
+              Craftsman Furniture Catalog
             </h1>
             <p className="mt-3 text-stone-600 text-sm sm:text-base leading-relaxed">
               Every design shown below is built to order in our workshop. Pick a design to customize dimensions, wood finishes, and upholstery fabric.
@@ -112,7 +124,7 @@ export function CatalogPage() {
           </div>
 
           {/* Filter Bar & Search */}
-          <div className="bg-white p-4 sm:p-5 rounded-2xl border border-teak-200/80 shadow-warm-sm mb-10 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <div className="bg-white p-4 sm:p-5 rounded-3xl border border-teak-200/80 shadow-warm-md mb-8 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
             <CategoryFilter
               categories={categories}
               activeCategory={categoryParam}
@@ -128,26 +140,57 @@ export function CatalogPage() {
             </div>
           </div>
 
-          {/* Results Summary */}
-          <div className="flex items-center justify-between mb-6 text-xs sm:text-sm text-stone-500">
+          {/* Results Summary & View Mode Switcher */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-4 text-xs sm:text-sm text-stone-600 pb-4 border-b border-teak-200/60">
             <div className="flex items-center gap-2">
               <SlidersHorizontal className="w-4 h-4 text-gold-600" />
               <span>
-                Showing <strong className="text-teak-900 font-semibold">{products.length}</strong> handcrafted pieces
+                Showing <strong className="text-teak-950 font-bold">{products.length}</strong> handcrafted pieces
                 {categoryParam !== 'all' && (
-                  <span> in <span className="capitalize font-semibold text-teak-900">{categoryParam}</span></span>
+                  <span> in <span className="capitalize font-semibold text-gold-700">{categoryParam}</span></span>
                 )}
               </span>
             </div>
 
-            <span className="hidden sm:inline text-stone-400 text-xs">
-              Direct from workshop • 10-year warranty
-            </span>
+            <div className="flex items-center justify-between sm:justify-end gap-4">
+              <span className="hidden sm:inline text-stone-400 text-xs">
+                Direct from workshop • 10-year termite warranty
+              </span>
+
+              {/* View Switcher */}
+              <div className="flex items-center bg-cream-100 p-1 rounded-xl border border-teak-200/70">
+                <button
+                  onClick={() => setLayoutMode('grid')}
+                  className={`p-2 rounded-lg text-xs font-semibold flex items-center gap-1 transition-all ${
+                    layoutMode === 'grid'
+                      ? 'bg-teak-900 text-cream-50 shadow-sm'
+                      : 'text-stone-600 hover:text-teak-950'
+                  }`}
+                  aria-label="Grid View"
+                >
+                  <LayoutGrid className="w-4 h-4" />
+                  <span className="hidden md:inline">Grid View</span>
+                </button>
+
+                <button
+                  onClick={() => setLayoutMode('list')}
+                  className={`p-2 rounded-lg text-xs font-semibold flex items-center gap-1 transition-all ${
+                    layoutMode === 'list'
+                      ? 'bg-teak-900 text-cream-50 shadow-sm'
+                      : 'text-stone-600 hover:text-teak-950'
+                  }`}
+                  aria-label="List View"
+                >
+                  <List className="w-4 h-4" />
+                  <span className="hidden md:inline">Architectural View</span>
+                </button>
+              </div>
+            </div>
           </div>
 
-          {/* Products Grid */}
+          {/* Products Grid / List */}
           {loading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className={layoutMode === 'grid' ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8' : 'space-y-6'}>
               {Array.from({ length: 6 }).map((_, i) => (
                 <ProductCardSkeleton key={i} />
               ))}
@@ -155,7 +198,7 @@ export function CatalogPage() {
           ) : products.length > 0 ? (
             <motion.div
               layout
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+              className={layoutMode === 'grid' ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8' : 'space-y-6'}
             >
               <AnimatePresence>
                 {products.map((product) => (
@@ -163,6 +206,8 @@ export function CatalogPage() {
                     key={product.id}
                     product={product}
                     onEnquire={handleOpenProductEnquiry}
+                    onQuickView={handleOpenQuickView}
+                    layoutMode={layoutMode}
                   />
                 ))}
               </AnimatePresence>
@@ -194,6 +239,14 @@ export function CatalogPage() {
           )}
         </div>
       </div>
+
+      {/* Quick View Modal */}
+      <QuickViewModal
+        product={quickViewProduct}
+        isOpen={quickViewOpen}
+        onClose={() => setQuickViewOpen(false)}
+        onEnquire={handleOpenProductEnquiry}
+      />
 
       {/* Enquiry Modal */}
       <EnquiryModal
